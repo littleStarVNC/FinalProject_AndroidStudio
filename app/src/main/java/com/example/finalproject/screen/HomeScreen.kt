@@ -1,18 +1,13 @@
-package com.example.finalproject.screens
+package com.example.finalproject.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,29 +17,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.finalproject.R
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-    ) {
-        TopBar(navController = navController, title = "Trang chủ", showBackButton = false)
+    )
+
+    {
+        TopBar()
         ImageCarousel()
         FeatureGrid(navController)
     }
 }
 
-
-
-
 @Composable
-fun TopBar(navController: NavHostController, title: String, showBackButton: Boolean = true) {
+fun TopBar() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,33 +47,16 @@ fun TopBar(navController: NavHostController, title: String, showBackButton: Bool
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Hiển thị nút Back nếu showBackButton = true
-        if (showBackButton) {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-        }
-
-        // Hiển thị tiêu đề
         Text(
-            text = title,
+            text = "GPLX Hạng A1",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold
         )
-
-        // Hiển thị icon Settings
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = "Cài đặt"
-        )
+        Icon(Icons.Default.Settings, contentDescription = "Cài đặt")
     }
 }
 
-
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ImageCarousel() {
     val pagerState = rememberPagerState()
@@ -94,8 +72,8 @@ fun ImageCarousel() {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         HorizontalPager(
-            state = pagerState,
             count = imageList.size,
+            state = pagerState,
             modifier = Modifier
                 .height(200.dp)
                 .fillMaxWidth()
@@ -118,20 +96,16 @@ fun ImageCarousel() {
 }
 
 @Composable
-fun FeatureGrid(navController: NavHostController) {
+fun FeatureGrid(navController: NavController) {
     val features = listOf(
-        "Học lý thuyết" to Icons.Default.MenuBook,
-        "Thi sát hạch" to Icons.Default.Schedule,
-        "Biển báo" to Icons.Default.Report,
-        "Mẹo thi" to Icons.Default.TipsAndUpdates,
-        "Các câu sai" to Icons.Default.Description,
+        Triple("Học lý thuyết", Icons.Default.MenuBook, "lythuyet"),
+        Triple("Thi sát hạch", Icons.Default.Schedule, "thisathach"),
+        Triple("Biển báo", Icons.Default.Report, "bienbao"),
+        Triple("Mẹo thi", Icons.Default.TipsAndUpdates, "meothi"),
+        Triple("Các câu sai", Icons.Default.Description, "caccausai"),
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Column(modifier = Modifier.padding(16.dp)) {
         for (i in features.indices step 2) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -147,23 +121,12 @@ fun FeatureGrid(navController: NavHostController) {
     }
 }
 
-
 @Composable
-fun FeatureCard(pair: Pair<String, ImageVector>, navController: NavHostController) {
+fun FeatureCard(item: Triple<String, ImageVector, String>, navController: NavController) {
     Card(
         modifier = Modifier
             .size(150.dp)
-            .padding(4.dp)
-            .clickable {
-                // Điều hướng đến màn hình tương ứng
-                when (pair.first) {
-                    "Học lý thuyết" -> navController.navigate("ly_thuyet")
-                    "Thi sát hạch" -> navController.navigate("thi_sat_hach")
-                    "Biển báo" -> navController.navigate("bien_bao")
-                    "Mẹo thi" -> navController.navigate("meo_thi")
-                    "Các câu sai" -> navController.navigate("cac_cau_sai")
-                }
-            },
+            .clickable { navController.navigate(item.third) },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -174,15 +137,21 @@ fun FeatureCard(pair: Pair<String, ImageVector>, navController: NavHostControlle
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                imageVector = pair.second,
-                contentDescription = null,
-                modifier = Modifier.size(36.dp)
-            )
+            Icon(imageVector = item.second, contentDescription = null, modifier = Modifier.size(36.dp))
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = pair.first, textAlign = TextAlign.Center)
+            Text(text = item.first, textAlign = TextAlign.Center)
         }
     }
 }
-
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FeatureTopBar(title: String, onBackClick: () -> Unit) {
+    TopAppBar(
+        title = { Text(title) },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        }
+    )
+}
