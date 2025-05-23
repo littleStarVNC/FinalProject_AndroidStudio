@@ -11,12 +11,14 @@ import com.example.finalproject.screen.*
 fun AppNavigation(modifier: Modifier) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "login") {
         composable("home") { HomeScreen(navController) }
         composable("lythuyet") { LyThuyetScreen(navController) }
         composable("thisathach") { ThiSatHachScreen(navController) }
         composable("bienbao") { BienBaoScreen(navController) }
         composable("meothi") { MeoThiScreen(navController) }
         composable("caccausai") { CacCauSaiScreen(navController) }
+        composable("login") { LoginScreen(navController) }
+        composable("register") { RegisterScreen(navController) }
     }
 }
