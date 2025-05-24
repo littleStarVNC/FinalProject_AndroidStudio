@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
 
     implementation(platform(libs.firebase.bom))
@@ -76,7 +78,7 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.database.ktx)
     implementation(libs.google.firebase.firestore.ktx)
-
+    implementation(libs.firebase.appcheck.playintegrity)
 
 }
 

@@ -25,10 +25,11 @@ fun RegisterScreen(navController: NavController) {
     val auth = FirebaseAuth.getInstance()
     val db = Firebase.firestore
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
-
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         Text("Đăng ký", fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -77,12 +78,15 @@ fun RegisterScreen(navController: NavController) {
                                             popUpTo("register") { inclusive = true }
                                         }
                                     }
-                                    .addOnFailureListener {
-                                        Toast.makeText(context, "Lỗi lưu dữ liệu người dùng", Toast.LENGTH_SHORT).show()
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(context, "Lỗi khi lưu dữ liệu: ${e.message}", Toast.LENGTH_LONG).show()
                                     }
+                            } else {
+                                Toast.makeText(context, "Không thể lấy ID người dùng", Toast.LENGTH_SHORT).show()
                             }
                         } else {
-                            Toast.makeText(context, "Đăng ký thất bại: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            val errorMessage = task.exception?.localizedMessage ?: "Không rõ nguyên nhân"
+                            Toast.makeText(context, "Đăng ký thất bại: $errorMessage", Toast.LENGTH_LONG).show()
                         }
                     }
             },
