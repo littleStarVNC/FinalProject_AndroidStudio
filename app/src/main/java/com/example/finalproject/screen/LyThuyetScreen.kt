@@ -1,10 +1,11 @@
 package com.example.finalproject.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Group
@@ -35,7 +36,7 @@ fun LyThuyetScreen(navController: NavController) {
                 title = { Text("Học Lý Thuyết") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
@@ -57,7 +58,10 @@ fun LyThuyetScreen(navController: NavController) {
                 subTitle = "Gồm 83 câu hỏi",
                 dangerInfo = "(18 Câu điểm liệt)",
                 progress = 0,
-                total = 83
+                total = 83,
+                onClick = {
+                    navController.navigate("test/concept_rules")
+                }
             )
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -66,13 +70,17 @@ fun LyThuyetScreen(navController: NavController) {
                 title = "VĂN HOÁ VÀ ĐẠO ĐỨC LÁI",
                 subTitle = "Gồm 5 câu hỏi",
                 progress = 0,
-                total = 5
+                total = 5,
+                onClick = {
+                    navController.navigate("test/culture_ethics")
+                }
             )
 
-            // Tiếp tục thêm các mục khác
+            // Add more categories as needed
         }
     }
 }
+
 @Composable
 fun CategoryItem(
     icon: ImageVector,
@@ -80,19 +88,22 @@ fun CategoryItem(
     subTitle: String,
     dangerInfo: String? = null,
     progress: Int,
-    total: Int
+    total: Int,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
+        // Rest of your existing CategoryItem implementation
         Row(
-            modifier = Modifier
-                .padding(16.dp),
+            modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Existing content...
             Icon(
                 icon,
                 contentDescription = null,
@@ -130,3 +141,4 @@ fun CategoryItem(
         }
     }
 }
+
