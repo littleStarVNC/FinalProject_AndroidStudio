@@ -14,7 +14,7 @@ import com.example.finalproject.util.getDeThi
 import com.example.finalproject.screen.*
 
 @Composable
-fun AppNavigation(modifier: Modifier) {
+fun AppNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "login") {
@@ -37,6 +37,19 @@ fun AppNavigation(modifier: Modifier) {
                     navController.navigate("thi_sat_hach/$soDe")
                 })
             }
+        }
+
+        composable(
+            "test/{categoryId}",
+            arguments = listOf(navArgument("categoryId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val categoryId = backStackEntry.arguments?.getString("categoryId") ?: ""
+            val categoryTitle = when (categoryId) {
+                "concept_rules" -> "KHÁI NIỆM VÀ QUY TẮC"
+                "culture_ethics" -> "VĂN HOÁ VÀ ĐẠO ĐỨC LÁI"
+                else -> "Bài Kiểm Tra"
+            }
+            TestScreen(navController, categoryId, categoryTitle)
         }
 
         // Màn hình thi sát hạch với số đề truyền vào
