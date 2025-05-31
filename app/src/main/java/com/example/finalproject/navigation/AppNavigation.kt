@@ -1,5 +1,7 @@
 package com.example.finalproject.navigation
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -18,20 +20,26 @@ fun AppNavigation(modifier: Modifier) {
     NavHost(navController = navController, startDestination = "login") {
         composable("home") { HomeScreen(navController) }
         composable("lythuyet") { LyThuyetScreen(navController) }
-        //composable("thisathach") { ThiSatHachScreen(navController) }
         composable("bienbao") { BienBaoScreen(navController) }
         composable("meothi") { MeoThiScreen(navController) }
         composable("caccausai") { CacCauSaiScreen(navController) }
         composable("login") { LoginScreen(navController) }
         composable("register") { RegisterScreen(navController) }
+
         // Màn hình chọn đề
         composable("thisathach") {
-            ChonDeScreen(onDeSelected = { soDe ->
-                navController.navigate("thi_sat_hach/$soDe")
-            })
+            Column(modifier = Modifier.fillMaxSize()) {
+                FeatureTopBar(title = "Thi sát hạch") {
+                    navController.popBackStack()
+                }
+
+                ChonDeScreen(onDeSelected = { soDe ->
+                    navController.navigate("thi_sat_hach/$soDe")
+                })
+            }
         }
 
-// Màn hình thi sát hạch với số đề truyền vào
+        // Màn hình thi sát hạch với số đề truyền vào
         composable(
             "thi_sat_hach/{soDe}",
             arguments = listOf(navArgument("soDe") { type = NavType.IntType })
@@ -43,10 +51,16 @@ fun AppNavigation(modifier: Modifier) {
             var correct by remember { mutableStateOf(0) }
             var passed by remember { mutableStateOf(false) }
 
-            ThiSatHachScreen(deThi = deThi) { correctCount, isPassed ->
-                correct = correctCount
-                passed = isPassed
-                showResult = true
+            Column(modifier = Modifier.fillMaxSize()) {
+                FeatureTopBar(title = "Đề thi số $soDe") {
+                    navController.popBackStack()
+                }
+
+                ThiSatHachScreen(deThi = deThi) { correctCount, isPassed ->
+                    correct = correctCount
+                    passed = isPassed
+                    showResult = true
+                }
             }
 
             KetQuaDialog(
@@ -58,6 +72,5 @@ fun AppNavigation(modifier: Modifier) {
                 navController.popBackStack("thisathach", inclusive = false)
             }
         }
-
     }
 }
