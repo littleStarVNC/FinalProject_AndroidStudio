@@ -37,6 +37,18 @@ fun AppNavigation(
                 cauSaiList = cauSaiListState.value
             )
         }
+        composable("tintuc"){
+            TinTucScreen(navController)
+        }
+
+        composable(
+            route = "news_detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: -1
+            NewsDetailScreen(navController = navController, articleId = id)
+        }
+
 
         composable("login") { LoginScreen(navController) }
         composable("register") { RegisterScreen(navController) }

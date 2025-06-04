@@ -109,6 +109,7 @@ fun FeatureGrid(navController: NavController) {
         Triple("Biển báo", Icons.Default.Report, "bienbao"),
         Triple("Mẹo thi", Icons.Default.TipsAndUpdates, "meothi"),
         Triple("Các câu sai", Icons.Default.Description, "caccausai"),
+        Triple("Tin tức giao thông",Icons.Default.Newspaper, "tintuc" )
     )
 
     Column(modifier = Modifier.padding(16.dp)) {

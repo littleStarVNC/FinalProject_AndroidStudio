@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+    id("kotlinx-serialization")
 
 }
 
@@ -89,8 +90,8 @@ dependencies {
     implementation(libs.google.firebase.firestore.ktx)
     implementation(libs.firebase.appcheck.playintegrity)
 
-
-
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
 }
 
